@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+
+{% block app_content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>$(document).ready(function(){
+
+    // code to read selected table row cell data (values).
+    $("#myTable4").on('click','.btnSelect4',function(){
+         // get the current row
+         var currentRow=$(this).closest("tr");
+         var firm=$("#firm").text();
+         var role=$("#role").text();
+         var location=$("#location").text();
+         var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+
+    $.ajax({
+        url: "/found",
+        data: JSON.stringify( {'id': col1,
+                                'action': 'change',
+                              'role': role,
+                            'location': location,
+                          'firm': firm } ),
+        contentType: 'application/json;charset=UTF-8',
+        type: 'POST',
+        success: function(response) {
+          window.location.href = "/check";
+        }
+      });
+    });
+});
+</script>
+
+<h1>Check for Changes to Profile</h1>
+<div class="col-md-4">
+  {{ wtf.quick_form(uform) }}
+</div>
+
+<div>
+  <table id="myTable4" class="table table-hover">
+          <thead>
+            <tr>
+              <th>Old</th>
+              <th>New</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ update['Name'][0] }} </td>
+              <td><a target="_blank" href="{{ update['Link'] }}">LinkedIn</a></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>{{ update['Location'][0] }} </td>
+              <td id="location">{{ update['Location'][1] }}</td>
+            </tr>
+            <tr>
+              <td>{{ update['Role'][0] }} </td>
+              <td id="role">{{ update['Role'][1] }}</td>
+            </tr>
+            <tr>
+              <td>{{ update['Firm'][0] }} </td>
+              <td id="firm">{{ update['Firm'][1] }}</td>
+            </tr>
+            <tr>
+              <td> {{ update['ID'] }}</td>
+              <td><button class="btnSelect4">Change!</button></td>
+            </tr>
+
+          </tbody>
+    </table>
+  </div>
+{% endblock %}

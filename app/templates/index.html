@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+    // code to read selected table row cell data (values).
+    $("#myTable5").on('click','.btnSelect5',function(){
+         // get the current row
+         var currentRow=$(this).closest("tr");
+
+         var id=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+
+
+         $.ajax({
+             url: "/pros",
+             data: JSON.stringify( {'id': id,
+                                     'action': 'update'} ),
+             contentType: 'application/json;charset=UTF-8',
+             type: 'POST',
+             success: function(response) {
+               window.location.href = "/index";
+             }
+    });
+});
+});
+</script>
+
+    <h4>Hi, {{ current_user.name }}!</h4>
+
+    <hp>The Users Below Have Found New Roles. Please Update PROS with tags below and Select the 'Confirm' Button</p>
+    <p> <b>leaverslead</b>: if lead entered</p>
+    <p> <b>sar</b>: if career history updated</p>
+    <br>
+    <div>
+      <table id="myTable5" class="table table-hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Firm</th>
+                  <th>Location</th>
+                  <th>Link</th>
+                  <th>PROS Updated?</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for find in found %}
+                <tr>
+                  <td>{{ find.id }}</td>
+                  <td>{{ find.name }}</td>
+                  <td>{{ find.lrole }}</td>
+                  <td>{{ find.lfirm }}</td>
+                  <td>{{ find.llocation }}</td>
+                  <td><a target="_blank" href="{{ find.llink }}">LinkedIn</a></td>
+                  <td><button class="btnSelect5">Confirm</button></td>
+          </tr>
+                {% endfor %}
+
+              </tbody>
+        </table>
+      </div>
+
+
+{% endblock %}

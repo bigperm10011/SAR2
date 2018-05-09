@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Python Flask Blog App</title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+    <link href="http://bootstrapdocs.com/v3.3.4/docs/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="http://java2s.com/style/bootstrap.min.css" rel="stylesheet">
+    <script type='text/javascript'
+          src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+            // LOAD DROPDOWN //
+    $.getJSON( '/ndrop', function( response ) {
+                console.log(response);
+              // Remove old options
+              $('#navdrop1').find('option').remove();
+              var trHTML = '<option value="Select Leaver"</option>';
+              // Add new items
+              for(var f=0;f<response.length;f++) {
+                trHTML += '<option value="' + response[f]['ident'] + '">' + response[f]['name'] + '</option>'
+              }
+              console.log(trHTML);
+                $('#navdrop1').append(trHTML);
+              });
+
+
+
+              // REACT To DROPDOWN //
+    $("#navdrop1").on('change', function() {
+      var selection = $('#navdrop1').val();
+      $.getJSON( '/ajax', { 'data' : selection } , function( response ) {
+        // console.log(response);
+        console.log(response.B.length);
+        var trHTML = '<thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Link</th></tr></thead><tbody>';
+        var cardHTML = '<div id="PROS"><div class="card-body"><div class="text-center"><h5 class="card-title">PROS Record</h5></div><ul class="list-group list-group-flush"><li class="list-group-item">Name: ';
+            cardHTML += response.A['leavername'] + '<li class="list-group-item">Role: '
+                      + response.A['leaverrole'] + '</li><li class="list-group-item">Firm: '
+                      + response.A['leaverfirm'] + '</li><li class="list-group-item">Date Added: '
+                      + response.A['leavertime'] + '</li></ul></div>';
+
+        for(var f=0;f<response.B.length;f++) {
+          console.log(f);
+          trHTML += '<tr><td>'
+                    + response.B[f].ident + '</td><td>'
+                    + response.B[f].name + '</td><td>'
+                    + response.B[f].role + '</td><td>'
+                    + response.B[f].firm + '</td><td><a target="_blank" href="'
+                    + response.B[f].link + ' ">LinkedIn</a></td><td><button class="btnSelect1">Follow</button><button class="btnSelect2">Place</button><button class="btnSelect3">Remove</button></td>';
+            }
+
+            trHTML += '</tbody>';
+            console.log(trHTML);
+            console.log(cardHTML);
+            $('#result123').html(trHTML);
+            $('#comparecard').html(cardHTML);
+            $( ".spin-grid" ).removeClass( "fa-spin" );
+
+          });
+
+      } );
+
+      // FOLLOW BUTTON CLICK //
+
+      $("#result123").on('click','.btnSelect1',function(){
+           // get the current row
+           var currentRow=$(this).closest("tr");
+
+           var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+
+      $.getJSON( '/followclick', { 'data' : col1 } , function( response ) {
+          $('#result123').find('td').remove();
+          $('#navdrop1').find('option').remove();
+          $('#comparecard').find("#PROS").remove();
+          var trHTML = '';
+          // Add new items
+          for(var f=0;f<response.length;f++) {
+            trHTML += '<option value="' + response[f]['ident'] + '">' + response[f]['name'] + '</option>'
+          }
+          console.log(trHTML);
+            $('#navdrop1').append(trHTML);
+
+        });
+        });
+
+        // PLACE BUTTON CLICK //
+
+        $("#result123").on('click','.btnSelect2',function(){
+             // get the current row
+             var currentRow=$(this).closest("tr");
+
+             var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+
+        $.getJSON( '/pclick', { 'data' : col1 } , function( response ) {
+            $('#result123').find('td').remove();
+            $('#navdrop1').find('option').remove();
+            $('#comparecard').find("#PROS").remove();
+
+            var trHTML = '<option value="Select Leaver"</option>';
+            // Add new items
+            for(var f=0;f<response.length;f++) {
+              trHTML += '<option value="' + response[f]['ident'] + '">' + response[f]['name'] + '</option>'
+            }
+            console.log(trHTML);
+              $('#navdrop1').append(trHTML);
+
+          });
+          });
+
+
+            // DELETE BUTTON CLICK //
+          $("#result123").on('click','.btnSelect3',function(){
+               // get the current row
+               var currentRow=$(this).closest("tr");
+
+               var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+
+          $.getJSON( '/dclick', { 'data' : col1 } , function( response ) {
+              $('#result123').find('td').remove();
+              var trHTML = '<thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Link</th></tr></thead><tbody>';
+              for(var f=0;f<response.length;f++) {
+                trHTML += '<tr><td>'
+                          + response[f].ident + '</td><td>'
+                          + response[f]['name'] + '</td><td>'
+                          + response[f]['role'] + '</td><td>'
+                          + response[f]['firm'] + '</td><td><a target="_blank" href="'
+                          + response[f]['link'] + ' ">LinkedIn</a></td><td><button class="btnSelect1">Follow</button><button class="btnSelect2">Place</button><button class="btnSelect3">Remove</button></td>';
+                  }
+                  trHTML += '</tbody>';
+                  console.log(trHTML);
+                  $('#result123').html(trHTML);
+                  $( ".spin-grid" ).removeClass( "fa-spin" );
+
+            });
+            });
+        // $.ajax({
+        //     url: '/ajax',
+        //     type: 'GET',
+        //     contentType: 'application/json;charset=UTF-8',
+        //     data: selection,
+        //     success: function(response) {
+        //       console.log(response);
+        //
+        //     }
+
+
+
+
+        });
+
+
+
+
+
+
+
+
+
+    </script>
+
+  </head>
+
+  <body><div class="container-fluid">
+      <!-- <div class="row justify-content-center">
+        <div class="col-2">
+          <h2 class="text-center">Step 2: Track</h2>
+        </div>
+      </div> -->
+      <!-- <div class="row justify-content-center">
+        <div class="col-2">
+          <h6 class="text-center"> Match LinkedIn Profile Summary to PROS Data</h6>
+        </div> -->
+      </div>
+    </div>
+  <div class="container-fluid">
+      <!-- <div class="row justify-content-center"> -->
+
+          <div class="col-md-3">
+            <select name="navdrop" id="navdrop1">
+
+                <!-- Dropdown options go here -->
+            </select>
+
+            </div>
+            <div class="col-md-6">
+              <h2 class="text-center">Step 2: Track</h2>
+              <h6 class="text-center"> Match LinkedIn Profile Summary to PROS Data</h6>
+            </div>
+            <div class="col-md-3">
+              <div id='comparecard' class="card bg-light text-dark border-primary">
+                  <!-- Card data populated here -->
+
+                </div>
+              </div>
+            <!-- </div> -->
+          </div>
+        </div>
+
+  <table id="result123" class="table table-hover table-dark">
+
+        </table>
+
+  </body>
+  </html>

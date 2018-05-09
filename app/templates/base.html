@@ -1,0 +1,71 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+    {% if title %}{{ title }} - SAR{% else %}Welcome to Search and Rescue{% endif %}
+{% endblock %}
+<head>
+{% import 'bootstrap/wtf.html' as wtf %}
+                        <!-- for testing -->
+
+     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+                            <!-- for testing -->
+
+<script type='text/javascript'
+      src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('upload') }}">Step 1: Upload</a></li>
+                    <li><a href="{{ url_for('track') }}">Step 2: Track</a></li>
+                    <li><a href="{{ url_for('check') }}">Step 3: Update</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                    <li><a href="{{ url_for('test') }}">Test</a></li>
+                    <li><a href="{{ url_for('tstcompare') }}">Compare Test</a></li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_anonymous %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}

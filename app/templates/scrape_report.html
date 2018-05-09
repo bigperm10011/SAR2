@@ -1,0 +1,32 @@
+<p>Dear {{ current_user.name }},</p>
+
+<p> The Following Search Results were rejected </p>
+<p> Details:</p>
+<div>
+  <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Ratio</th>
+              <th>Link</th>
+              <th>Location</th>
+              <th>Role</th>
+              <th>Firm</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for j in results %}
+              {% for k in j %}
+            <tr>
+              <td> {{ k['Name'] }} </td>
+              <td> {{ k['Ratio'] }} </td>
+              <td><a target="_blank" href="{{ k['Link'] }}">LinkedIn</a></td>
+              <td> {{ k['Location'] }} </td>
+              <td> {{ k['Role'] }} </td>
+              <td> {{ k['Firm'] }} </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>

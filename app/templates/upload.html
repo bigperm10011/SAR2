@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<h1>Step 1: Upload Excel File</h1>
+<br>
+<h4> Please Upload an .xlsx file in the format below.</h4>
+
+    <br>
+  <div>
+    <table id="exTable" class="table table-hover">
+        <thead>
+            <thead>
+              <tr>
+                <th>first</th>
+                <th>last</th>
+                <th>repcode</th>
+                <th>teamcode</th>
+                <th>role</th>
+                <th>firm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>JANE</td>
+                <td>DOE</td>
+                <td>JBUH</td>
+                <td>HF3</td>
+                <td>Trader</td>
+                <td>JP MORGAN SECURITIES LLC</td>
+            </tbody>
+          </table>
+  </div>
+  <br>
+    <h6> [Reference CSRC Leavers Search for Data] </h6>
+<br><br>
+  <form action="" method=post enctype=multipart/form-data><p>
+      <input type=file name=file><input type=submit
+      value=UploadLeaver>
+    </form>
+
+
+{% endblock %}

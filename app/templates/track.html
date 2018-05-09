@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block app_content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script>$(document).ready(function(){
+
+    // code to read selected table row cell data (values).
+    $("#myTable1").on('click','.btnSelect1',function(){
+         // get the current row
+         var currentRow=$(this).closest("tr");
+
+         var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+
+    $.ajax({
+        url: "/folla",
+        data: JSON.stringify( {'data': col1,
+                                'action': 'follow'} ),
+        contentType: 'application/json;charset=UTF-8',
+        type: 'POST',
+        success: function(response) {
+          window.location.href = "/track";
+        }
+      });
+    });
+    $("#myTable1").on('click','.btnSelect2',function(){
+         // get the current row
+         var currentRow=$(this).closest("tr");
+
+
+         var col1=currentRow.find("td:eq(0)").text(); // get current row 2nd TD
+
+         $.ajax({
+             url: "/folla",
+             data: JSON.stringify( {'data': col1,
+                                      'action': 'place'} ),
+             contentType: 'application/json;charset=UTF-8',
+             type: 'POST',
+             success: function(response) {
+               window.location.href = "/track";
+             }
+           });
+
+    });
+    $("#myTable1").on('click','.btnSelect3',function(){
+         // get the current row
+         var currentRow=$(this).closest("tr");
+
+         var col1=currentRow.find("td:eq(0)").text(); // get current row 3rd TD
+         $.ajax({
+             url: "/folla",
+             data: JSON.stringify( {'data': col1,
+                                      'action': 'remove'} ),
+             contentType: 'application/json;charset=UTF-8',
+             type: 'POST',
+             success: function(response) {
+               window.location.href = "/track";
+             }
+           });
+
+    });
+});
+</script>
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-2">
+        <h2 class="text-center">Step 2: Track</h2>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-2">
+        <h6 class="text-center"> Match LinkedIn Profile Summary to PROS Data</h6>
+      </div>
+    </div>
+  </div>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-6">
+            {{ wtf.quick_form(beginform) }}
+
+          </div>
+
+          <div class="col-md-6">
+            <div class="card text-primary border-primary">
+                <div class="card-body">
+                  <div class="text-center">
+                <h5 class="card-title">{{ profile.name }} (PROS)</h5>
+              </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Role: {{ profile.prole }}</li>
+                    <li class="list-group-item">Firm: {{ profile.pfirm }}</li>
+                    <li class="list-group-item">Date Added: {{ profile.timestamp }}</li>
+                    <li class="list-group-item">{{ wtf.quick_form(refreshform) }}</li>
+                  </ul>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<div>
+  <h3>Select From Possible Matches</h3>
+  <table id="myTable1" class="table table-hover">
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Firm</th>
+              <th>Location</th>
+              <th>Link</th>
+              <th> </th>
+              <th> </th>
+              <th> </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for suspect in suspects %}
+            <tr>
+              <td>{{ suspect.id }} </td>
+              <td>{{ suspect.name }}</td>
+              <td>{{ suspect.role }}</td>
+              <td>{{ suspect.firm }}</td>
+              <td>{{ suspect.location }}</td>
+              <td><a target="_blank" href="{{ suspect.link }}">LinkedIn</a></td>
+              <td><button class="btnSelect1">Follow</button></td>
+              <td><button class="btnSelect2">Place</button></td>
+              <td><button class="btnSelect3">Remove</button></td>
+      </tr>
+            {% endfor %}
+
+          </tbody>
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

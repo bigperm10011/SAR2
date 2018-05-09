@@ -1,0 +1,38 @@
+<p>Dear {{ current_user.name }},</p>
+
+<p> {{ found.name }}'s LinkedIn profile has changed indicating they've found a new role! </p>
+<p> Details:</p>
+
+<div>
+  <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Previous Role</th>
+              <th>New Role</th>
+              <th>Previous Firm</th>
+              <th>New Firm</th>
+              <th>Location</th>
+              <th>Link</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> {{ found.name }} </td>
+              <td> {{ found.prole }} </td>
+              <td> {{ found.lrole }} </td>
+              <td> {{ found.pfirm }} </td>
+              <td> {{ found.lfirm }} </td>
+              <td> {{ found.llocation }} </td>
+              <td><a target="_blank" href="{{ found.llink }}">LinkedIn</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<p> Please Update PROS and Alert the Covering Rep where appropriate</p>
+
+Regards,
+
+The SAR Team
