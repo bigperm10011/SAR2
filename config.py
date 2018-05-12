@@ -13,3 +13,4 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'jdbuhrman'
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'Jberm100*'
     ADMINS = ['jdbuhrman@gmail.com']
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
