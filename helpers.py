@@ -13,7 +13,8 @@ import sys
 from flask_login import current_user
 import re
 from multiprocessing import Pool
-from datetime import datetime
+import datetime
+import csv
 
 
 ######## TEST HELPERS ##############
@@ -391,6 +392,7 @@ def fillselect(leavers):
     leaver_dict = []
     for l in leavers:
         suspects = Suspect.query.filter_by(leaverid=l.id, include='Yes').all()
+        print(len(suspects))
         num = len(suspects)
         if num > 0:
             dval = l.name + ' ' + '(' + str(num) + ')'
@@ -417,9 +419,12 @@ def comparefill(thing):
     l = Leaver.query.filter_by(id=thing).first()
     ddate = l.timestamp.date().strftime('%m/%d/%Y')
     leaverdict = {'leaverid': l.id, 'leavername': l.name, 'leaverfirm': l.lfirm, 'leaverrole': l.lrole, 'leavertime': ddate, 'leaverlink': l.llink, 'leaverloc': l.llocation}
-
+    if '/de - Translate this page' in l.llink:
+        link = l.llink.split('/de')[0]
+    else:
+        link = l.llink
     browser = webdriver.Firefox(executable_path=r'/Users/Jeff/anaconda/bin/geckodriver')
-    url_linkedin = 'https://www.google.com/search?q=' + l.llink
+    url_linkedin = 'https://www.google.com/search?q=' + link
     browser.get(url_linkedin)
     results = browser.find_elements_by_class_name('rc')
     result = results[0]
@@ -463,6 +468,28 @@ def comparefill(thing):
     parentdict['A'] = leaverdict
     parentdict['B'] = d
     return parentdict
+
+def dblbackup():
+    with open('/Users/Jeff/sar2/db_backup/leaver.csv', 'r', encoding='cp1252') as csvfile:
+        # print(datetime.datetime.utcnow())
+        tbl_reader = csv.reader(csvfile, delimiter=',')
+        for row in tbl_reader:
+            # dt = datetime.datetime.strptime(row[11], "%m/%d/%Y %H:%M:%S")
+            l = Leaver(id=row[0], name=row[1], status=row[2], prole=row[3], pfirm=row[4],
+            lrole=row[5], lfirm=row[6], llink=row[7], llocation=row[8], team=row[9],
+            repcode=row[10], updated=row[12])
+            db.session.add(l)
+            db.session.commit()
+
+def dbsbackup():
+    # id	leaverid	name	include	role	firm	location	link	timestamp
+    with open('/Users/Jeff/sar2/db_backup/suspect.csv', 'r', encoding = "ISO-8859-1") as csvfile:
+        tbl_reader = csv.reader(csvfile, delimiter=',')
+        for row in tbl_reader:
+            s = Suspect(id=row[0], leaverid=row[1], name=row[2], include=row[3], role=row[4],
+            firm=row[5], location=row[6], link=row[7])
+            db.session.add(s)
+            db.session.commit()
 #Simply have another python script file (for example helpers.py) in the same
 #directory as your main flask .py file. Then at the top of your main flask file,
 # you can do import helpers which will let you access any function in helpers

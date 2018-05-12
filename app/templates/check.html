@@ -2,73 +2,110 @@
 
 
 {% block app_content %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script>$(document).ready(function(){
+<script>
+$(document).ready(function() {
+          // LOAD DROPDOWN //
+  $.getJSON( '/comparedrop', function( response ) {
+              console.log(response);
+            // Remove old options
+            $('#comparedrop').find('option').remove();
+            var trHTML = '<option value="Select Leaver"</option>';
+            // Add new items
+            for(var f=0;f<response.length;f++) {
+              trHTML += '<option value="' + response[f]['ident'] + '">' + response[f]['name'] + '</option>'
+            }
+            console.log(trHTML);
+              $('#comparedrop').append(trHTML);
+            });
 
-    // code to read selected table row cell data (values).
-    $("#myTable4").on('click','.btnSelect4',function(){
-         // get the current row
-         var currentRow=$(this).closest("tr");
-         var firm=$("#firm").text();
-         var role=$("#role").text();
-         var location=$("#location").text();
-         var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+          $("#comparedrop").on('change', function() {
+            var selection = $('#comparedrop').val();
+            $.getJSON( '/cards', { 'data' : selection } , function( response ) {
+              // console.log(response);
+              // Remove old options
+              $('#tabledelete').find('#filltable').remove();
+              var tHTML = '<tbody id="filltable">';
+                  tHTML += '<tr><td>id</td><td id="chgid">' + response.A['leaverid'] + '</td><td>' + response.B['id'] + '</td></tr>'
+                            + '<tr><td>Name</td><td id="chgname">' + response.A['leavername'] + '</td><td>' + response.B['name'] + '</td></tr>'
+                            + '<tr><td>Role</td><td id="chgrole">' + response.A['leaverrole'] + '</td><td>' + response.B['role'] + '</td></tr>'
+                            + '<tr><td>Firm</td><td id="chgfirm">' + response.A['leaverfirm'] + '</td><td>' + response.B['firm'] + '</td></tr>'
+                            + '<tr><td>Location</td><td id="chgloc">' + response.A['leaverloc'] + '</td><td>' + response.B['location'] + '</td></tr>'
+                            + '<tr><td>Updated</td><td>' + response.A['leavertime'] + '</td><td>Just Now</td></tr>'
+                            + '<tr><td>Action</td><td><button id="changebtn" class="btnSelect1">Change!</button></td><td><a target="_blank" href="' + response.B['link'] + ' ">LinkedIn</a></td></tr></tbody>';
 
-    $.ajax({
-        url: "/found",
-        data: JSON.stringify( {'id': col1,
-                                'action': 'change',
-                              'role': role,
-                            'location': location,
-                          'firm': firm } ),
-        contentType: 'application/json;charset=UTF-8',
-        type: 'POST',
-        success: function(response) {
-          window.location.href = "/check";
-        }
-      });
-    });
-});
+                  $('#tabledelete').append(tHTML);
+                  });
+                  } );
+
+                  $("#changebtn").on('click', function() {
+                    var chgid = $('#chgid').val();
+                    var chgid = $('#chgname').val();
+                    var chgid = $('#chgrole').val();
+                    var chgid = $('#chgfirm').val();
+                    var chgid = $('#chgloc').val();
+                    $.getJSON( '/found', { 'id' : chgid,
+                                            'name': chgname,
+                                            'role': chgrole,
+                                            'firm': chgfirm,
+                                            'location': chgloc } ,
+                    function( response ) {
+                      console.log(response);
+                      // Remove old options
+                      $('#tabledelete').find('#filltable').remove();
+                      $('#comparedrop').find('option').remove();
+                      var trHTML = '<option value="Select Leaver"</option>';
+                      // Add new items
+                      for(var f=0;f<response.length;f++) {
+                        trHTML += '<option value="' + response[f]['ident'] + '">' + response[f]['name'] + '</option>'
+                      }
+                      console.log(trHTML);
+                        $('#navdrop1').append(trHTML);
+                });
+              });
+            });
+
 </script>
 
-<h1>Check for Changes to Profile</h1>
-<div class="col-md-4">
-  {{ wtf.quick_form(uform) }}
+
+                    <!-- HEADER -->
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <h2 class="text-center">Step 3: Compare</h2>
+    </div>
+  </div>
+<br><br><br>
+                      <!-- DROPDOWN -->
+
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <select name="comparedrop" id="comparedrop">
+        <!-- Dropdown options go here -->
+    </select>
+  </div>
+
+  </div>
 </div>
 
-<div>
-  <table id="myTable4" class="table table-hover">
-          <thead>
-            <tr>
-              <th>Old</th>
-              <th>New</th>
 
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ update['Name'][0] }} </td>
-              <td><a target="_blank" href="{{ update['Link'] }}">LinkedIn</a></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>{{ update['Location'][0] }} </td>
-              <td id="location">{{ update['Location'][1] }}</td>
-            </tr>
-            <tr>
-              <td>{{ update['Role'][0] }} </td>
-              <td id="role">{{ update['Role'][1] }}</td>
-            </tr>
-            <tr>
-              <td>{{ update['Firm'][0] }} </td>
-              <td id="firm">{{ update['Firm'][1] }}</td>
-            </tr>
-            <tr>
-              <td> {{ update['ID'] }}</td>
-              <td><button class="btnSelect4">Change!</button></td>
-            </tr>
+                    <!-- TABLE -->
+<div class="container">
+  <div class="row">
+  <table id="tabledelete" class="table table-hover table-dark">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Old</th>
+        <th>New</th>
+      </tr>
+        </thead>
 
-          </tbody>
-    </table>
-  </div>
+<!-- Table Content Goes Here -->
+
+        </table>
+      </div>
+    </div>
+
+
+
 {% endblock %}

@@ -19,6 +19,7 @@ class Leaver(db.Model):
     suspects = db.relationship('Suspect', backref='leaver', lazy='dynamic', cascade="all, delete, delete-orphan")
     updated = db.Column(db.String(10), default='No')
     rescued = db.relationship('Rescue', backref='leaver', uselist=False)
+    proscreatedt = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<Leaver {}>'.format(self.name)
@@ -69,3 +70,10 @@ class Rescue(db.Model):
 @login.user_loader
 def load_user(id):
     return Srep.query.get(int(id))
+
+
+
+###################### DB Commands ######################
+# flask db init
+# flask db migrate -m "sar2 table"
+# flask db upgrade
