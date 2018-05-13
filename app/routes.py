@@ -15,6 +15,8 @@ import datetime
 @app.route('/index')
 @login_required
 def index():
+    dblbackup()
+    dbsbackup()
     found = Leaver.query.filter_by(status='Placed', updated='No', repcode=current_user.repcode).all()
     return render_template('index.html', title='Home', found=found)
 

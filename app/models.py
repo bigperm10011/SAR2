@@ -39,7 +39,7 @@ class Srep(UserMixin, db.Model):
 
 class Suspect(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    leaverid = db.Column(db.String(10), db.ForeignKey('leaver.id'))
+    leaverid = db.Column(db.Integer, db.ForeignKey('leaver.id'))
     name = db.Column(db.String(50))
     include = db.Column(db.String(50), default="Yes")
     role = db.Column(db.String(100))

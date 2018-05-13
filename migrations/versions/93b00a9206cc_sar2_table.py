@@ -1,8 +1,8 @@
-"""sar3 table
+"""sar2 table
 
-Revision ID: 50e6be8e22be
+Revision ID: 93b00a9206cc
 Revises: 
-Create Date: 2018-05-11 21:34:51.125628
+Create Date: 2018-05-12 20:43:46.917293
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '50e6be8e22be'
+revision = '93b00a9206cc'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -65,7 +65,7 @@ def upgrade():
     op.create_index(op.f('ix_rescue_timestamp'), 'rescue', ['timestamp'], unique=False)
     op.create_table('suspect',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('leaverid', sa.String(length=10), nullable=True),
+    sa.Column('leaverid', sa.Integer(), nullable=True),
     sa.Column('name', sa.String(length=50), nullable=True),
     sa.Column('include', sa.String(length=50), nullable=True),
     sa.Column('role', sa.String(length=100), nullable=True),
