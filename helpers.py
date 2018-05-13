@@ -296,7 +296,7 @@ def getlinks(repcode):
 
 def threadscrape(ident, link):
     #browser = webdriver.Firefox(executable_path=r'/Users/Jeff/anaconda/bin/geckodriver')
-    browser = webdriver.Firefox()
+    browser = webdriver.Firefox(executable_path=r'/.sar2/bin/geckodriver')
     browser.get(link)
     results = browser.find_elements_by_class_name('rc')
     lfuzz = Leaver.query.filter_by(id=ident).first()
