@@ -48,9 +48,9 @@ def upload():
         rez = processfile(f)
         if rez == "Success":
             flash('Leavers Uploaded and Saved. Searching for Matches...')
-            tlst = getlinks(current_user.repcode)
-            rezzies = turboscrape(threadscrape, tlst)
-            processresults(rezzies)
+            #tlst = getlinks(current_user.repcode)
+            #rezzies = turboscrape(threadscrape, tlst)
+            #processresults(rezzies)
             flash('Potential Matches Added. Proceed to Step 2 to sort.')
         else:
             flash('ERROR: Try Again')
