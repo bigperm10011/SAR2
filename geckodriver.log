@@ -6608,3 +6608,18 @@ Unable to read VR Path Registry from /Users/Jeff/Library/Application Support/Ope
 2018-05-11 23:25:22.475 plugin-container[2799:8305370] *** CFMessagePort: bootstrap_register(): failed 1100 (0x44c) 'Permission denied', port = 0x8543, name = 'com.apple.tsm.portname'
 See /usr/include/servers/bootstrap_defs.h for the error codes.
 [GFX1-]: Receive IPC close with reason=AbnormalShutdown
+1527547889168	geckodriver	INFO	geckodriver 0.19.1
+1527547889178	geckodriver	INFO	Listening on 127.0.0.1:64923
+1527547890252	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-profile" "/var/folders/sh/w3qpf1f51sgdfmvcnzbpmjtm0000gn/T/rust_mozprofile.QOQRz1orAfjS"
+Unable to read VR Path Registry from /Users/Jeff/Library/Application Support/OpenVR/.openvr/openvrpaths.vrpath
+Unable to read VR Path Registry from /Users/Jeff/Library/Application Support/OpenVR/.openvr/openvrpaths.vrpath
+2018-05-28 18:51:32.114 plugin-container[55799:4421294] *** CFMessagePort: bootstrap_register(): failed 1100 (0x44c) 'Permission denied', port = 0x7243, name = 'com.apple.tsm.portname'
+See /usr/include/servers/bootstrap_defs.h for the error codes.
+1527547892799	Marionette	INFO	Listening on port 64934
+1527547892867	Marionette	WARN	TLS certificate errors will be ignored for this session
+Unable to read VR Path Registry from /Users/Jeff/Library/Application Support/OpenVR/.openvr/openvrpaths.vrpath
+2018-05-28 18:51:33.323 plugin-container[55800:4421401] *** CFMessagePort: bootstrap_register(): failed 1100 (0x44c) 'Permission denied', port = 0x703f, name = 'com.apple.tsm.portname'
+See /usr/include/servers/bootstrap_defs.h for the error codes.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 55800, Chrome_ChildThread] WARNING: pipe error: Broken pipe: file /builds/worker/workspace/build/src/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 709
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown

@@ -20,6 +20,9 @@ class Leaver(db.Model):
     updated = db.Column(db.String(10), default='No')
     rescued = db.relationship('Rescue', backref='leaver', uselist=False)
     proscreatedt = db.Column(db.DateTime)
+    track_name = db.Column(db.String(100))
+    track_detail = db.Column(db.String(1000))
+    track_lst_update = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<Leaver {}>'.format(self.name)
