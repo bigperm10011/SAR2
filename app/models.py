@@ -23,6 +23,9 @@ class Leaver(db.Model):
     track_name = db.Column(db.String(100))
     track_detail = db.Column(db.String(1000))
     track_lst_update = db.Column(db.DateTime)
+    track_firm = db.Column(db.String(100))
+    track_location = db.Column(db.String(100))
+    track_role = db.Column(db.String(100))
 
     def __repr__(self):
         return '<Leaver {}>'.format(self.name)
