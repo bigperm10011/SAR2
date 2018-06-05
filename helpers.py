@@ -427,7 +427,7 @@ def comparefill(thing):
     d['id'] = l.id
     d['role'] = l.track_role
     d['firm'] = l.track_firm
-    d['updated'] l.track_lst_update
+    d['updated'] = l.track_lst_update
     parentdict['A'] = leaverdict
     parentdict['B'] = d
     return parentdict
