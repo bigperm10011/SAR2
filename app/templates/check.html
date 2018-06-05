@@ -30,7 +30,7 @@ $(document).ready(function() {
                             + '<tr><td>Role</td><td id="chgrole">' + response.A['leaverrole'] + '</td><td>' + response.B['role'] + '</td></tr>'
                             + '<tr><td>Firm</td><td id="chgfirm">' + response.A['leaverfirm'] + '</td><td>' + response.B['firm'] + '</td></tr>'
                             + '<tr><td>Location</td><td id="chgloc">' + response.A['leaverloc'] + '</td><td>' + response.B['location'] + '</td></tr>'
-                            + '<tr><td>Updated</td><td>' + response.A['leavertime'] + '</td><td>Just Now</td></tr>'
+                            + '<tr><td>Updated</td><td>' + response.A['leavertime'] + '</td><td>' + response.B['updated'] + '</td></tr>'
                             + '<tr><td>Action</td><td><button id="changebtn" class="btnSelect1">Change!</button></td><td><a target="_blank" href="' + response.B['link'] + ' ">LinkedIn</a></td></tr></tbody>';
 
                   $('#tabledelete').append(tHTML);
