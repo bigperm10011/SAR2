@@ -420,52 +420,13 @@ def comparefill(thing):
     l = Leaver.query.filter_by(id=thing).first()
     ddate = l.timestamp.date().strftime('%m/%d/%Y')
     leaverdict = {'leaverid': l.id, 'leavername': l.name, 'leaverfirm': l.lfirm, 'leaverrole': l.lrole, 'leavertime': ddate, 'leaverlink': l.llink, 'leaverloc': l.llocation}
-    if '/de - Translate this page' in l.llink:
-        link = l.llink.split('/de')[0]
-    else:
-        link = l.llink
-    browser = webdriver.Firefox(executable_path=r'/Users/Jeff/anaconda/bin/geckodriver')
-    url_linkedin = 'https://www.google.com/search?q=' + link
-    browser.get(url_linkedin)
-    results = browser.find_elements_by_class_name('rc')
-    result = results[0]
-    rlst = result.text.split('\n')
-    browser.quit()
-
-    if len(rlst) == 4:
-        d = {}
-        name = re.split('- |\|', rlst[0])[0].strip()
-        d['name'] = name
-        d['link'] = rlst[1]
-        d['id'] = l.id
-        info_list = rlst[2].split(' - ')
-        try:
-            d['location'] = info_list[0]
-        except:
-            d['location'] = 'None'
-        try:
-            d['role'] = info_list[1]
-        except:
-            d['role'] = 'None'
-        try:
-            d['firm'] = info_list[2]
-        except:
-            d['firm'] = 'None'
-
-    elif len(rlst) == 3:
-        d = {}
-        otherlst = re.split('- |\|', rlst[0])
-        d['name'] = re.split('- |\|', rlst[0])[0].strip()
-        d['link'] = rlst[1]
-        d['location'] = 'None'
-        d['id'] = l.id
-        if len(otherlst) == 4 and otherlst[1] != 'LinkedIn':
-            d['role'] = otherlst[1]
-            d['firm'] = otherlst[2]
-
-        else:
-            d['role'] = 'None'
-            d['firm'] = 'None'
+    d = {}
+    d['name'] = l.name
+    d['link'] = l.llink
+    d['location'] = l.track_location
+    d['id'] = l.id
+    d['role'] = l.track_role
+    d['firm'] = l.track_firm
     parentdict['A'] = leaverdict
     parentdict['B'] = d
     return parentdict
