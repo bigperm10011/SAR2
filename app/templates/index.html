@@ -1,28 +1,59 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
-
-    // code to read selected table row cell data (values).
-    $("#myTable5").on('click','.btnSelect5',function(){
+    $.getJSON( '/pros', function( response ) {
+      console.log(response);
+      var trHTML = '<thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Firm</th><th>Location</th><th>Link</th><th>PROS Updated?</th></tr></thead><tbody>';
+      for(var f=0;f<response.B.length;f++) {
+        console.log(f);
+        trHTML += '<tr><td>'
+                  + response.B[f].leaverid + '</td><td>'
+                  + response.B[f].leavername + '</td><td>'
+                  + response.B[f].leaverole + '</td><td>'
+                  + response.B[f].leaverfirm + '</td><td>'
+                  + response.B[f].leaverlocation + '</td><td><a target="_blank" href="'
+                  + response.B[f].leaverlink + ' ">LinkedIn</a></td><td><button class="PROSconfirm">Confirm</button></td></tr>';
+          }
+          trHTML += '</tbody>';
+          console.log(trHTML);
+          $('#PROStable').html(trHTML);
+          $( ".spin-grid" ).removeClass( "fa-spin" );
+          });
+    // user clicks confirm in table once they update users PROS record with new job info
+    $("#PROStable").on('click','.PROSconfirm',function(){
          // get the current row
          var currentRow=$(this).closest("tr");
 
          var id=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+         console.log(id);
 
+         $.getJSON( '/rescue', { 'data' : id, 'action': 'update' } , function( response ) {
+           $.bootstrapGrowl("PROS Update Confirmed", {
+               ele: 'body',
+               type: 'success',
+               offset: {from: 'top', amount: 20},
+               align: 'right'
+             });
+             $('#PROStable').find('td').remove();
+             var trHTML = '<thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Firm</th><th>Location</th><th>Link</th><th>PROS Updated?</th></tr></thead><tbody>';
+             for(var f=0;f<response.B.length;f++) {
+               console.log(f);
+               trHTML += '<tr><td>'
+                         + response.B[f].leaverid + '</td><td>'
+                         + response.B[f].leavername + '</td><td>'
+                         + response.B[f].leaverole + '</td><td>'
+                         + response.B[f].leaverfirm + '</td><td>'
+                         + response.B[f].leaverlocation + '</td><td><a target="_blank" href="'
+                         + response.B[f].leaverlink + ' ">LinkedIn</a></td><td><button class="PROSconfirm">Confirm</button></td></tr>';
+                 }
+                 trHTML += '</tbody>';
+                 console.log(trHTML);
+                 $('#PROStable').html(trHTML);
+                 $( ".spin-grid" ).removeClass( "fa-spin" );
 
-         $.ajax({
-             url: "/pros",
-             data: JSON.stringify( {'id': id,
-                                     'action': 'update'} ),
-             contentType: 'application/json;charset=UTF-8',
-             type: 'POST',
-             success: function(response) {
-               window.location.href = "/index";
-             }
-    });
+           });
 });
 });
 </script>
@@ -34,33 +65,9 @@ $(document).ready(function(){
     <p> <b>sar</b>: if career history updated</p>
     <br>
     <div>
-      <table id="myTable5" class="table table-hover">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Role</th>
-                  <th>Firm</th>
-                  <th>Location</th>
-                  <th>Link</th>
-                  <th>PROS Updated?</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for find in found %}
-                <tr>
-                  <td>{{ find.id }}</td>
-                  <td>{{ find.name }}</td>
-                  <td>{{ find.lrole }}</td>
-                  <td>{{ find.lfirm }}</td>
-                  <td>{{ find.llocation }}</td>
-                  <td><a target="_blank" href="{{ find.llink }}">LinkedIn</a></td>
-                  <td><button class="btnSelect5">Confirm</button></td>
-          </tr>
-                {% endfor %}
+      <table id="PROStable" class="table table-hover table-dark">
 
-              </tbody>
-        </table>
+            </table>
       </div>
 
 

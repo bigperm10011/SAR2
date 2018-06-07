@@ -17,14 +17,22 @@ import datetime
 import csv
 
 
-######## TEST HELPERS ##############
-
-
-
+######## Index/Homepage HELPERS ##############
+#populates placed leavers in table on homepage
+def placefill():
+    placed = Leaver.query.filter_by(status='Placed', repcode=current_user.repcode).all()
+    parentdict = {}
+    placed_dict = {}
+    placed_list = []
+    for l in placed:
+        placed_dict = {'leavername': l.name, 'leaverfirm': l.track_firm, 'leaverrole': l.track_role, 'leaverlocation': l.track_location, 'leaverlink': l.llink, 'leaverid': l.id}
+        placed_list.append(placed_dict)
+    parentdict['B'] = placed_list
+    return parentdict
 
 
 ######## UPLOAD HELPERS ##############
-
+#adds NEW leavers to database from pandas df
 def pd2class(row):
     if Leaver.query.filter_by(name=row['name'], prole=row['role'], pfirm=row['firm']).first():
         pass
@@ -33,7 +41,7 @@ def pd2class(row):
         db.session.add(l)
         db.session.commit()
 
-
+#translates excel file to pandas df passing rows to pd2class
 def processfile(file):
     data_xls = pd.read_excel(file)
     data_xls["name"] = data_xls["first"] + ' ' + data_xls["last"]
@@ -44,6 +52,52 @@ def processfile(file):
     return 'Success'
 
 ####### Track HELPERS ############
+#populates the dropdown on track page with leavers. selection triggers tablefill
+def fillselect(leavers):
+    leaver_dict = []
+    for l in leavers:
+        suspects = Suspect.query.filter_by(leaverid=l.id, include='Yes').all()
+        num = len(suspects)
+        if num > 0:
+            dval = l.name + ' ' + '(' + str(num) + ')'
+            s_dict = {'ident': l.id, 'name': dval}
+            leaver_dict.append(s_dict)
+    return leaver_dict
+
+#populates dictionary for suspect table on fillselect selection AND comparison card
+def tablefill(thing):
+    l = Leaver.query.filter_by(id=thing).first()
+    ddate = l.timestamp.date().strftime('%m/%d/%Y')
+    parentdict = {}
+    suspect_list = []
+    leaverdict = {'leavername': l.name, 'leaverfirm': l.pfirm, 'leaverrole': l.prole, 'leavertime': ddate}
+    suspects = Suspect.query.filter_by(leaverid=thing, include='Yes').all()
+    for s in suspects:
+        s_dict = {'ident': s.id, 'name': s.name, 'link': s.link, 'role': s.role, 'firm':s.firm}
+        suspect_list.append(s_dict)
+    parentdict['A'] = leaverdict
+    parentdict['B'] = suspect_list
+    return parentdict
+
+######################## Check HELPERS ############################
+#generate 2 dicts to populate 2 cards for comparison
+def comparefill(thing):
+    parentdict = {}
+    l = Leaver.query.filter_by(id=thing).first()
+    ddate = l.timestamp.date().strftime('%m/%d/%Y')
+    leaverdict = {'leaverid': l.id, 'leavername': l.name, 'leaverfirm': l.lfirm, 'leaverrole': l.lrole, 'leavertime': ddate, 'leaverlink': l.llink, 'leaverloc': l.llocation}
+    d = {}
+    d['name'] = l.name
+    d['link'] = l.llink
+    d['location'] = l.track_location
+    d['id'] = l.id
+    d['role'] = l.track_role
+    d['firm'] = l.track_firm
+    d['updated'] = l.track_lst_update
+    parentdict['A'] = leaverdict
+    parentdict['B'] = d
+    return parentdict
+
 
 def getchoices():
     leavers = Leaver.query.filter_by(repcode=current_user.repcode, status='Lost').all()
@@ -389,48 +443,11 @@ def processresults(results):
 
 #################### AJAX HELPERS ############################
 
-def fillselect(leavers):
-    leaver_dict = []
-    for l in leavers:
-        suspects = Suspect.query.filter_by(leaverid=l.id, include='Yes').all()
-        print(len(suspects))
-        num = len(suspects)
-        if num > 0:
-            dval = l.name + ' ' + '(' + str(num) + ')'
-            s_dict = {'ident': l.id, 'name': dval}
-            leaver_dict.append(s_dict)
-    return leaver_dict
 
-def tablefill(thing):
-    l = Leaver.query.filter_by(id=thing).first()
-    ddate = l.timestamp.date().strftime('%m/%d/%Y')
-    parentdict = {}
-    suspect_list = []
-    leaverdict = {'leavername': l.name, 'leaverfirm': l.pfirm, 'leaverrole': l.prole, 'leavertime': ddate}
-    suspects = Suspect.query.filter_by(leaverid=thing, include='Yes').all()
-    for s in suspects:
-        s_dict = {'ident': s.id, 'name': s.name, 'link': s.link, 'role': s.role, 'firm':s.firm}
-        suspect_list.append(s_dict)
-    parentdict['A'] = leaverdict
-    parentdict['B'] = suspect_list
-    return parentdict
 
-def comparefill(thing):
-    parentdict = {}
-    l = Leaver.query.filter_by(id=thing).first()
-    ddate = l.timestamp.date().strftime('%m/%d/%Y')
-    leaverdict = {'leaverid': l.id, 'leavername': l.name, 'leaverfirm': l.lfirm, 'leaverrole': l.lrole, 'leavertime': ddate, 'leaverlink': l.llink, 'leaverloc': l.llocation}
-    d = {}
-    d['name'] = l.name
-    d['link'] = l.llink
-    d['location'] = l.track_location
-    d['id'] = l.id
-    d['role'] = l.track_role
-    d['firm'] = l.track_firm
-    d['updated'] = l.track_lst_update
-    parentdict['A'] = leaverdict
-    parentdict['B'] = d
-    return parentdict
+
+
+
 
 def dblbackup():
     with open('/Users/Jeff/sar2/db_backup/leaver.csv', 'r', encoding='cp1252') as csvfile:

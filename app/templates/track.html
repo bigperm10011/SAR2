@@ -61,6 +61,12 @@
            var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
 
       $.getJSON( '/followclick', { 'data' : col1 } , function( response ) {
+        $.bootstrapGrowl("Following Leaver", {
+            ele: 'body',
+            type: 'success',
+            offset: {from: 'top', amount: 20},
+            align: 'right'
+          });
           $('#result123').find('td').remove();
           $('#navdrop1').find('option').remove();
           $('#comparecard').find("#PROS").remove();
@@ -84,6 +90,12 @@
              var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
 
         $.getJSON( '/pclick', { 'data' : col1 } , function( response ) {
+          $.bootstrapGrowl("Leaver Placed", {
+              ele: 'body',
+              type: 'success',
+              offset: {from: 'top', amount: 20},
+              align: 'right'
+            });
             $('#result123').find('td').remove();
             $('#navdrop1').find('option').remove();
             $('#comparecard').find("#PROS").remove();
@@ -108,6 +120,12 @@
                var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
 
           $.getJSON( '/dclick', { 'data' : col1 } , function( response ) {
+            $.bootstrapGrowl("Suspect Removed", {
+                ele: 'body',
+                type: 'success',
+                offset: {from: 'top', amount: 20},
+                align: 'right'
+              });
               $('#result123').find('td').remove();
               var trHTML = '<thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Link</th></tr></thead><tbody>';
               for(var f=0;f<response.length;f++) {

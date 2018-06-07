@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-<title>{% block title %}{% if title %}{{ title }} - SAR{% else %}Search and Rescue{% endif %}{% endblock %}</title>
+<title>
+{% block title %}{% if title %}{{ title }} - SAR{% else %}Search and Rescue{% endif %}{% endblock %}</title>
 
 
                                               <!-- CSS & WTForms -->
@@ -11,34 +12,7 @@
                                                 <!-- JQuery -->
 <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
 <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>
-
-    <!-- <script	src="https://code.jquery.com/jquery-3.3.1.js"
-    			  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-    			  crossorigin="anonymous"></script>
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script> -->
-     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
-
-
-     <!-- <script type="text/javascript"
-              src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script> -->
-
-
-<!-- <script type="text/javascript"
-      src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-      crossorigin="anonymous"> -->
-<!-- from other pages -->
-      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-      <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
-      <link href="http://bootstrapdocs.com/v3.3.4/docs/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-      <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.0.0/jquery.bootstrap-growl.js"></script>
 
                                           <!-- Navbar -->
 </head>
@@ -52,8 +26,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
             </div>
@@ -63,8 +35,6 @@
                     <li><a href="{{ url_for('track') }}">Step 2: Track</a></li>
                     <li><a href="{{ url_for('check') }}">Step 3: Update</a></li>
                     <li><a href="{{ url_for('register') }}">Register</a></li>
-                    <li><a href="{{ url_for('test') }}">Test</a></li>
-                    <li><a href="{{ url_for('tstcompare') }}">Compare Test</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -80,8 +50,8 @@
 {% endblock %}
 
 
-                                      <!-- Flash Messages -->
-{% block content %}
+                                      <!-- Flash Messages (Replaced with Growl) -->
+<!-- {% block content %}
     <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -90,7 +60,7 @@
             {% endfor %}
         {% endif %}
       {% endwith %}
-    {% endblock %}
+    {% endblock %} -->
 
 <body>
 

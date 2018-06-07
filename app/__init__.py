@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
+import psycopg2
 
 app = Flask(__name__)
 app.config.from_object(Config)
